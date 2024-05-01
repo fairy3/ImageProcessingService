@@ -67,12 +67,119 @@ class Bot:
 
 
 class QuoteBot(Bot):
+    def _init__(self, token, url):
+        super().__init__(token, url)
+
     def handle_message(self, msg):
         logger.info(f'Incoming message: {msg}')
 
-        if msg["text"] != 'Please don\'t quote me':
-            self.send_text_with_quote(msg['chat']['id'], msg["text"], quoted_msg_id=msg["message_id"])
+        if msg['text'] != 'Please don\'t quote me':
+            self.send_text_with_quote(msg['chat']['id'], msg['text'], quoted_msg_id=msg["message_id"])
 
 
 class ImageProcessingBot(Bot):
-    pass
+    def __init__(self, token, telegram_chat_url):
+        super().__init__(token, telegram_chat_url)
+        self.data = None
+
+    def blur_photo(self, chat_id, img_path):
+        img = Img(img_path)
+        img.blur()
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def contour_photo(self, chat_id, img_path):
+        img = Img(img_path)
+        img.contour()
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def rotate_photo(self, chat_id, img_path):
+        img = Img(img_path)
+        img.rotate()
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def salt_n_pepper_photo(self, chat_id, img_path):
+        img = Img(img_path)
+        img.salt_n_pepper()
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def concat_photo(self, chat_id, orig_img_path, img_path, direction):
+        img = Img(orig_img_path)
+        other_img = Img(img_path)
+        img.concat(other_img, direction)
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def segment_photo(self, chat_id, img_path):
+        img = Img(img_path)
+        img.segment()
+        new_path = img.save_img()
+        self.send_photo(chat_id, new_path)
+
+    def handle_message(self, msg):
+        logger.info(f'Incoming message 1: {msg}')
+        possible_captions = ['blur', 'contour', 'rotate', 'salt_n_pepper', 'concat', 'segment']
+
+        if self.is_current_msg_photo(msg):
+            try:
+                logger.info('photo arrived')
+                caption = msg.get("caption", "")
+
+                concat_options = ['horizontal', 'vertical', "concat,horizontal", "concat,vertical"]
+                if not caption:
+                    logger.error('Photo without a caption - impossible to processing')
+                    self.send_text(msg['chat']['id'], "We cannot process a photo without caption. "
+                                                      "Please send a photo with a caption."
+                                                      f"Possible captions: {', '.join(possible_captions)}")
+                else:
+                    caption = caption.lower()
+                    if caption not in possible_captions and caption not in concat_options:
+                        logger.error(f'unsupported caption: {caption}')
+                        self.send_text(msg['chat']['id'], f"Unsupported caption <{caption}>."
+                                                          f" Choose one of : {', '.join(possible_captions)}")
+                    else:
+                        path = self.download_user_photo(msg)
+                        chat_id = msg['chat']['id']
+
+                        if caption == 'blur':
+                            self.blur_photo(chat_id, path)
+                        elif caption == 'contour':
+                            self.contour_photo(chat_id, path)
+                        elif caption == 'rotate':
+                            self.rotate_photo(chat_id, path)
+                        elif caption == 'salt_n_pepper':
+                            self.salt_n_pepper_photo(chat_id, path)
+                        elif caption == 'segment':
+                            self.segment_photo(chat_id, path)
+                        elif caption == 'concat' or 'horizontal' or 'vertical':
+                            if self.data is None:
+                                self.data = path
+                                self.send_text(chat_id, f"Send another photo for concatenation and choose direction : "
+                                                        f"horizontal or vertical")
+                            else:
+                                direction = None
+                                if caption.find(',') != -1:
+                                    res = caption.split(',')
+                                    direction = res[-1]
+                                elif caption in concat_options:
+                                    direction = caption
+                                else:
+                                    direction = 'horizontal'
+
+                                self.concat_photo(chat_id, self.data, path, direction)
+                                self.data = None
+                        else:
+                            self.send_text(chat_id, f"The caption <{caption}> is under construction.")
+            except NotImplementedError as e:
+                self.data = None
+                self.send_text(chat_id, f"Under construction. Try later.")
+            except ValueError | RuntimeError as e:
+                self.data = None
+                self.send_text(chat_id, e)
+        else:
+            self.send_text(msg['chat']['id'], f"Hi {msg['chat']['first_name']}, welcome to our image processing bot."
+                                              f" Please send a photo and choose one of a following captions:{'\n'}"
+                                              f"{', '.join(possible_captions)}")

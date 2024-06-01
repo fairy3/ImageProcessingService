@@ -67,7 +67,7 @@ class Bot:
 
 
 class QuoteBot(Bot):
-    def _init__(self, token, url):
+    def __init__(self, token, url):
         super().__init__(token, url)
 
     def handle_message(self, msg):
@@ -175,7 +175,7 @@ class ImageProcessingBot(Bot):
                             self.send_text(chat_id, f"The caption <{caption}> is under construction.")
             except NotImplementedError as e:
                 self.data = None
-                self.send_text(chat_id, f"Under construction. Try later.")
+                self.send_text(chat_id, f"Under construction.")
             except ValueError | RuntimeError as e:
                 self.data = None
                 self.send_text(chat_id, e)

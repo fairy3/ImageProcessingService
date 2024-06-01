@@ -6,9 +6,9 @@ pipeline {
     }
 	    
     stages {
-        stage('Notify') {
+        stage('Build') {
             steps {
-                sh 'push has happened'
+                echo 'push has happened'
             }
         }
     }

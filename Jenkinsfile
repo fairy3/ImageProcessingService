@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'push has happened'
+		sh 'echo "Hello World!"'                
             }
         }
     }

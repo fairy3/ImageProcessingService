@@ -1,14 +1,10 @@
-// @Library('shared-lib-int') _
-
-//library 'shared-lib-int@main'
-
 pipeline {
-
-    
+    agent any
+    stages {
         stage('Build') {
             steps {
-		sh 'echo "Hello World from Rima!!!"'
+                sh 'echo "Hello World"'
             }
         }
-
     }
+}

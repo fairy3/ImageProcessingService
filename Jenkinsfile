@@ -46,6 +46,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+		sh 'echo "Hello World"'
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'pass', usernameVariable: 'user')]) {
 
                   sh "docker build -t ronhad/private-course:poly-bot-${env.BUILD_NUMBER} . "

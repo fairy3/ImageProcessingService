@@ -21,9 +21,9 @@ pipeline {
            cd polybot
 
             docker login -u $DOCKER_USERRNAME -p $DOCKER_PASS
-            docker build -t polybot:${BUILD_NUMBER} .
-            docker tag $IMG_NAME rimap2610/$IMG_NAME
-            docker push rimap2610/polybot:${BUILD_NUMBER} 
+            docker build -t ${IMG_NAME} .
+            docker tag ${IMG_NAME} rimap2610/${IMG_NAME}
+            docker push rimap2610/${IMG_NAME} 
             '''
 	 }
         }

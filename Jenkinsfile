@@ -2,7 +2,7 @@ pipeline {
     agent any
    
     environment {
-      IMS_NAME = polybot:${BUILD_NAME}
+      IMS_NAME = "polybot:${BUILD_NAME}"
     }
 
     triggers {

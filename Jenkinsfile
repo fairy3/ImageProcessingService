@@ -12,15 +12,16 @@ pipeline {
     stages {
 
         stage('Build docker image') {
-
+          steps { 
            sh '''
-               cd polybot
+           cd polybot
 
-               # docker login -u ... -p ...
-                 docker build -t polybot:${BUILD_NUMBER} .
-                 docker tag $IMG_NAME rimap2610/$IMG_NAME
-                 docker push rimap2610/polybot:${BUILD_NUMBER} 
+            # docker login -u ... -p ...
+            docker build -t polybot:${BUILD_NUMBER} .
+            docker tag $IMG_NAME rimap2610/$IMG_NAME
+            docker push rimap2610/polybot:${BUILD_NUMBER} 
             '''
+	  }
         }
        
     }

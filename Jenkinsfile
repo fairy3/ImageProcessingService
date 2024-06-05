@@ -18,7 +18,7 @@ pipeline {
               ) 
 	{
            sh '''
-           cd polybot
+            cd polybot
 
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
             docker build -t ${IMG_NAME} .

@@ -12,12 +12,10 @@ pipeline {
     stages {
         stage('Build docker image') {
           steps {
-
- 
-           sh '''
-            cd polybot
-            echo 'Hello world'
-            '''
+             sh '''
+               cd polybot
+               echo "'Hello world'"
+             '''
 	 }
         }
     }

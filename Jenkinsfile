@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Build docker image') {
           steps {
+
  
            sh '''
             cd polybot

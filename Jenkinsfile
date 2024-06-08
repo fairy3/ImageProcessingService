@@ -10,7 +10,6 @@ pipeline {
     }
 	    
     stages {
-
         stage('Build docker image') {
           steps { 
            withCredentials(

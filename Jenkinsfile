@@ -11,14 +11,15 @@ pipeline {
 	    
     stages {
         stage('Build docker image') {
-          steps { 
+          steps {
+ 
            withCredentials(
                  [usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]
               ) 
 	{
            sh '''
             cd polybot
-
+            echo 'Hello worldi
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
             docker build -t ${IMG_NAME} .
             docker tag ${IMG_NAME} rimap2610/${IMG_NAME}

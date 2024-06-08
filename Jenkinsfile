@@ -19,7 +19,7 @@ pipeline {
 	{
            sh '''
             cd polybot
-            echo 'Hello worldi
+            echo 'Hello world'
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
             docker build -t ${IMG_NAME} .
             docker tag ${IMG_NAME} rimap2610/${IMG_NAME}

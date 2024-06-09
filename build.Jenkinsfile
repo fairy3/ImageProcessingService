@@ -17,7 +17,7 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker build -t '${IMAGE_NAME}:latest' .
+                      docker build -t ${IMAGE_NAME}:latest .
                       docker tag ${IMAGE_NAME}:latest ${IMAGE_TAG}
                       docker push ${DOCKERHUB_REPOSITORY}:${IMAGE_TAG}
                     '''

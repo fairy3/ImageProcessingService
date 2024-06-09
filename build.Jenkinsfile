@@ -16,7 +16,7 @@ pipeline {
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
                       docker build -t my-app .
-                      docker tag my-app rimap2610/polybot:my-app
+                      docker tag my-app polybot:my-app
                       docker push  rimap2610/polybot:my-app
                     '''
             }

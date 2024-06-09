@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "polybot"
         IMAGE_TAG="${IMAGE_NAME}:${BUILD_NUMBER}"
-        REP = "rimap2610/polybot:"
+        REP = "rimap2610/polybot"
     }
 
     stages {
@@ -18,8 +18,8 @@ pipeline {
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
                       docker build -t ${IMAGE_NAME}:latest .
-                      docker tag ${IMAGE_NAME}:latest ${BUILD_NUMBER}
-                      docker push ${REP}${IMAGE_TAG}
+                      docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:${BUILD_NUMBER}
+                      docker push ${REP}:${BUILD_NUMBER}
                     '''
             }
 	      }
@@ -27,7 +27,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: "${REP}${IMAGE_TAG}")
+               string(name: 'IMAGE_URL', value: "${REP}${BUILD_NUMBER}")
                ]
            }
         }

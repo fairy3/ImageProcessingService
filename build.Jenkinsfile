@@ -3,7 +3,7 @@ pipeline {
    
     environment {
         IMAGE_NAME = "polybot"
-        IMAGE_TAG='$IMAGE_NAME:${BUILD_NUMBER}'
+        IMAGE_TAG=$IMAGE_NAME:${BUILD_NUMBER}
         DOCKERHUB_REPOSITORY='rimap2610/polybot'
     }
 
@@ -27,7 +27,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: '${DOCKERHUB_REPOSITORY}:${IMAGE_TAG}')
+               string(name: 'IMAGE_URL', value: ${DOCKERHUB_REPOSITORY}:${IMAGE_TAG})
                ]
            }
         }

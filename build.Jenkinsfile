@@ -4,7 +4,6 @@ pipeline {
     environment {
       IMAGE_NAME='polybot'
       IMAGE_TAG = "latest"
-      BUILD_NAME = '1.0'
       DOCKERHUB_REPOSITORY='rimap2610/polybot'
     }
 

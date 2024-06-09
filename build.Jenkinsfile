@@ -19,7 +19,7 @@ pipeline {
                       echo "'Docker build:'"
                       docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                       docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${BUILD_NAME}
-                      docker push ${DOCKER_USERNAME}/${IMAGE_NAME}/${IMAGE_NAME}:${BUILD_NAME}
+                      docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:${BUILD_NAME}
                     '''
             }
 	      }

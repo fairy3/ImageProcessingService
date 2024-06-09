@@ -18,8 +18,8 @@ pipeline {
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
                       docker build -t my-app .
-                      docker tag my-app polybot:my-app
-                      docker push ${DOCKER_USERNAME}/polybot:my-app
+                      docker tag my-app polybot:${BUILD_NAME}
+                      docker push ${DOCKER_USERNAME}/polybot:${BUILD_NAME}
                     '''
             }
 	      }
@@ -27,7 +27,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: "${DOCKER_USERNAME}/my-app:latest")
+               string(name: 'IMAGE_URL', value: '${DOCKER_USERNAME}/polybot:${BUILD_NAME}')
                ]
            }
         }

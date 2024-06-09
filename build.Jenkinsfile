@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "polybot"
         IMAGE_TAG="${IMAGE_NAME}:${BUILD_NUMBER}"
-        DOCKERHUB_REPOSITORY="rimap2610/polybot/"
+        DOCKERHUB_REPOSITORY="rimap2610/"
     }
 
     stages {

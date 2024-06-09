@@ -27,7 +27,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: ${DOCKERHUB_REPOSITORY}:${IMAGE_TAG})
+               string(name: 'IMAGE_URL', value: "${DOCKERHUB_REPOSITORY}:${IMAGE_TAG}")
                ]
            }
         }

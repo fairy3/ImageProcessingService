@@ -2,7 +2,9 @@ pipeline {
     agent any
    
     environment {
-      IMS_NAME = "polybot:v${BUILD_NAME}"
+      IMAGE_NAME = "polybot"
+      IMAGE_TAG = latest
+      BUILD_NAME = 1
     }
 
     stages {
@@ -15,9 +17,9 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker build -t my-app .
-                      docker tag my-app $IMS_NAME
-                      docker push  rimap2610/$IMS_NAME
+                      docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                      docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${BUILD_NAME}
+                      docker push  rimap2610/${IMS_NAME}
                     '''
             }
 	      }

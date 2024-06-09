@@ -15,7 +15,7 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker buildx build -t $IMG_NAME
+                      docker build -t $IMG_NAME .
                       docker tag $IMG_NAME rimap2610/$IMG_NAME
                       docker push rimap2610/$IMG_NAME
                     '''

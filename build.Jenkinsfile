@@ -17,9 +17,9 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker build -t my-app2 .
-                      docker tag my-app2 my-app:latest
-                      docker push ${DOCKER_USERNAME}/my-app:latest
+                      docker build -t my-app .
+                      docker tag my-app polybot:my-app
+                      docker push ${DOCKER_USERNAME}/polybot:my-app
                     '''
             }
 	      }

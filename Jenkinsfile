@@ -16,7 +16,6 @@ pipeline {
                [usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]
             ) {
                 sh '''
-                      echo "'Hello from build'"
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       docker build -t $IMG_NAME .

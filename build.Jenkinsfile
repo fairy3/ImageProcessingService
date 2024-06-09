@@ -2,9 +2,10 @@ pipeline {
     agent any
    
     environment {
-      IMAGE_NAME = "polybot"
+      IMAGE_NAME='polybot'
       IMAGE_TAG = "latest"
-      BUILD_NAME = "1"
+      BUILD_NAME = '1.0'
+      DOCKERHUB_REPOSITORY='rimap2610/polybot'
     }
 
     stages {
@@ -17,9 +18,9 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker build -t my-app .
-                      docker tag my-app polybot:${BUILD_NAME}
-                      docker push ${DOCKER_USERNAME}/polybot:${BUILD_NAME}
+                      docker build -t ${IMAGE_NAME}:latest .
+                      docker tag ${IMAGE_NAME}:latest ${DOCKERHUB_REPOSITORY}:${BUILD_NAME}
+                      docker push ${DOCKERHUB_REPOSITORY}:${BUILD_NAME}
                     '''
             }
 	      }
@@ -27,7 +28,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: '${DOCKER_USERNAME}/polybot:${BUILD_NAME}')
+               string(name: 'IMAGE_URL', value: '${DOCKERHUB_REPOSITORY}:${BUILD_NAME}')
                ]
            }
         }

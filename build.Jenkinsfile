@@ -2,7 +2,7 @@ pipeline {
     agent any
    
     environment {
-      IMS_NAME = "polybot:${BUILD_NAME}"
+      IMS_NAME = "polybot:v${BUILD_NAME}"
     }
 
     stages {
@@ -16,8 +16,8 @@ pipeline {
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
                       docker build -t my-app .
-                      docker tag my-app polybot:my-app
-                      docker push  rimap2610/polybot:my-app
+                      docker tag my-app $IMS_NAME
+                      docker push  rimap2610/$IMS_NAME
                     '''
             }
 	      }
@@ -25,7 +25,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: "rimap2610/polybot:my-app")
+               string(name: 'IMAGE_URL', value: "rimap2610/$IMS_NAME")
                ]
            }
         }

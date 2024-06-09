@@ -8,7 +8,8 @@ pipeline {
     triggers {
       githubPush()
     }
-	    
+
+
     stages {
         stage('Build docker image') {
           steps {
@@ -16,7 +17,14 @@ pipeline {
                cd polybot
                echo "'Hello world'"
              '''
-	 }
+	      }
         }
+        stage('Trigger Deploy') {
+	        steps {
+             build job: "Deploy", wait: false, parameters: [
+                  string(name: 'IMAGE_URL', value: "rimap2610/$IMG_NAME"
+             ]
+           }
+	    }
     }
 }

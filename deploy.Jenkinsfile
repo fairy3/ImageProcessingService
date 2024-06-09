@@ -1,6 +1,9 @@
 pipeline {
     agent any
-	    
+	   
+    parameters {
+	#IMAGE_URL
+    } 
     stages {
         stage('Deploy') {
           steps {

@@ -5,10 +5,6 @@ pipeline {
       IMS_NAME = "polybot:${BUILD_NAME}"
     }
 
-    triggers {
-      githubPush()
-    }
-
     stages {
         stage('Build docker image') {
           steps {

@@ -17,9 +17,9 @@ pipeline {
                       cd polybot
                       docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
                       echo "'Docker build:'"
-                      docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                      docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:${BUILD_NAME}
-                      docker push ${DOCKER_USERNAME}/${IMAGE_NAME}:${BUILD_NAME}
+                      docker build -t my-app:latest .
+                      docker tag my-app:latest my-app:1
+                      docker push ${DOCKER_USERNAME}/polybot/my-app:1
                     '''
             }
 	      }
@@ -27,7 +27,7 @@ pipeline {
         stage('Trigger Deploy') {
            steps {
                build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: "rimap2610/$IMS_NAME")
+               string(name: 'IMAGE_URL', value: "${DOCKER_USERNAME}/polybot/my-app:1")
                ]
            }
         }

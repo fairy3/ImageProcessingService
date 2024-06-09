@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Trigger Deploy') {
            steps {
-               build job: 'BotDeploy', wait: false, parameters: [
+               build job: 'deploy', wait: false, parameters: [
                string(name: 'IMAGE_URL', value: "rimap2610/$IMG_NAME")
                ]
            }

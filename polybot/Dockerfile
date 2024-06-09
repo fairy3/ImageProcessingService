@@ -1,8 +1,13 @@
-FROM python:3.10.12-slim-bullseye
+FROM python:3.12-slim-bookworm
 WORKDIR /app
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "app.py"]
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5000
+
+ENV FLASK_APP=app.py
+
+CMD ["python", "app.py"]

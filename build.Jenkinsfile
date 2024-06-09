@@ -5,6 +5,7 @@ pipeline {
       IMAGE_NAME='polybot'
       IMAGE_TAG = "latest"
       DOCKERHUB_REPOSITORY='rimap2610/polybot'
+      BUILD_NAME = '${BUILD_NUMBER}'
     }
 
     stages {

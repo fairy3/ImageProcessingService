@@ -5,7 +5,6 @@ pipeline {
       IMAGE_NAME = "polybot"
       IMAGE_TAG = "latest"
       BUILD_NAME = "1"
-      BUILD_NAME = "1"
     }
 
     stages {

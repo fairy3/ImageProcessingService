@@ -3,8 +3,7 @@ pipeline {
    
     environment {
         IMAGE_NAME = "polybot"
-        IMAGE_TAG="${IMAGE_NAME}:${BUILD_NUMBER}"
-        REP = "rimap2610/polybot"
+        REP = "${DOCKER_USERNAME}/${IMAGE_NAME}"
     }
 
     stages {

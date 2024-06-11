@@ -4,7 +4,6 @@ pipeline {
     environment {
         IMAGE_NAME = "polybot"
     }
-
     stages {
         stage('Build docker image') {
           steps {

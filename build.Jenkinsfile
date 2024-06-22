@@ -35,7 +35,7 @@ pipeline {
                   docker login -u $DOCKER_USERNAME -p $DOCKER_PASS                      
                   docker tag ${POLYBOT_IMAGE_NAME}:latest ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
                   docker push ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
-                  docker push ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
+                  docker push ${NGINX_IMAGE_NAME}
                '''
               }
 	   }

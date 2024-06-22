@@ -46,7 +46,7 @@ pipeline {
           script {
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]){
              sh '''
-               docker login -u ${DOCKER_USERNAME} =p ${DOCKER_PASS}
+               docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASS}
                docker tag ${NGINX_IMAGE_NAME} ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
                docker push ${NGINX_IMAGE_NAME}
              '''

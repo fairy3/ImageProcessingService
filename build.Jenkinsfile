@@ -26,22 +26,34 @@ pipeline {
            }
         }
 
-        stage('Tag and push images') {
+        stage('Tag and push polybot image') {
           steps {
              script {
              	withCredentials(
                	[usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]){
 	       sh '''
-                  docker login -u $DOCKER_USERNAME -p $DOCKER_PASS                      
+                  docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASS}                      
                   docker tag ${POLYBOT_IMAGE_NAME}:latest ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
                   docker push ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
-                  docker tag ${NGINX_IMAGE_NAME} ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
-                  docker push ${NGINX_IMAGE_NAME}
                '''
               }
 	   }
 	}
       }
+
+      stage('Tag and push nginx image') {
+        steps {
+          script {
+         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]){
+             sh '''
+               docker login -u ${DOCKER_USERNAME} =p ${DOCKER_PASS}
+               docker tag ${NGINX_IMAGE_NAME} ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
+               docker push ${NGINX_IMAGE_NAME}
+             '''
+	    }
+	}
+      }
+    }
 
         stage('Trigger Deploy') {
            steps {               

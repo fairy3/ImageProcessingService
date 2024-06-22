@@ -26,7 +26,7 @@ pipeline {
            }
         }
 
-        stage('Tag and push polybot image') {
+        stage('Tag and push images') {
           steps {
              script {
              	withCredentials(
@@ -35,32 +35,20 @@ pipeline {
                   docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASS}                      
                   docker tag ${POLYBOT_IMAGE_NAME}:latest ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
                   docker push ${DOCKER_USERNAME}/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}
+                  docker tag ${NGINX_IMAGE_NAME} ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
+                  docker push ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
                '''
               }
 	   }
 	}
       }
 
-      stage('Tag and push nginx image') {
-        steps {
-          script {
-         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASS')]){
-             sh '''
-               docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASS}
-               docker tag ${NGINX_IMAGE_NAME} ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
-               docker push ${DOCKER_USERNAME}/${NGINX_IMAGE_NAME}
-             '''
-	    }
+      stage('Trigger Deploy') {
+         steps {               
+            build job: 'deploy', wait: false, parameters: [
+            string(name: 'IMAGE_URL', value: "rimap2610/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}")
+           ]
 	}
       }
-    }
-
-        stage('Trigger Deploy') {
-           steps {               
-               build job: 'deploy', wait: false, parameters: [
-               string(name: 'IMAGE_URL', value: "rimap2610/${POLYBOT_IMAGE_NAME}:${BUILD_NUMBER}")
-               ]
-	  }
-        }
     }
 }
